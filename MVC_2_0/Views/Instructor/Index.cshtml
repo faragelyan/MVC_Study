@@ -1,0 +1,58 @@
+﻿@model List<MVC_2_0.Models.Instructor>
+
+@{
+    ViewData["Title"] = "All Instructors";
+}
+
+<style>
+    tr:hover {
+        background-color: #e6f2ff !important;
+    }
+
+    .instructor-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+</style>
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<a asp-controller="Instructor" asp-action="Add" class="btn btn-success mb-3">
+    + Add New Instructor
+</a>
+
+<table class="table table-striped table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Salary</th>
+            <th>Department</th>
+            <th>Course</th>
+            <th>Image</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var inst in Model)
+        {
+            <tr>
+                <td>@inst.Name</td>
+                <td>@inst.Address</td>
+                <td>@inst.Salary</td>
+                <td>@inst.Department?.Name</td>
+                <td>@inst.Course?.Name</td>
+                <td>
+                    <img src="~/images/@inst.ImageUrl" alt="@inst.Name" class="instructor-img" />
+                </td>
+                <td>
+                    <a asp-controller="Instructor" asp-action="Details" asp-route-id="@inst.Id" class="btn btn-primary btn-sm">
+                        Details
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,21 @@
+﻿@model MVC_2_0.Models.Instructor
+
+@{
+    ViewData["Title"] = "Instructor Details";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="card" style="width: 400px;">
+    <img src="~/images/@Model.ImageUrl" class="card-img-top" alt="@Model.Name" height="200" />
+    <div class="card-body">
+        <h4 class="card-title">@Model.Name</h4>
+        <p class="card-text">
+            <strong>Address:</strong> @Model.Address <br />
+            <strong>Salary:</strong> @Model.Salary <br />
+            <strong>Department:</strong> @Model.Department?.Name <br />
+            <strong>Course:</strong> @Model.Course?.Name
+        </p>
+        <a asp-controller="Instructor" asp-action="Index" class="btn btn-secondary">Back to All</a>
+    </div>
+</div>
