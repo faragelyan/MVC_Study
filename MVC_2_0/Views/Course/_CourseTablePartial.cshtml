@@ -1,0 +1,46 @@
+﻿@model List<MVC_2_0.Models.Course>
+
+@foreach (var course in Model)
+{
+    <tr>
+        <td>@course.Name</td>
+        <td>@course.Hours</td>
+        <td>@course.Degree</td>
+        <td>@course.MinDegree</td>
+        <td>@(course.Department?.Name ?? "N/A")</td>
+        <td>
+            @if (course.Instructors.Any())
+            {
+                <ul class="mb-0">
+                    @foreach (var instr in course.Instructors)
+                    {
+                        <li>@instr.Name</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span class="text-muted">No Instructors</span>
+            }
+        </td>
+        <td>
+            @if (course.CrsResult.Any())
+            {
+                <ul class="mb-0">
+                    @foreach (var res in course.CrsResult)
+                    {
+                        <li>Trainee ID: @res.TraineeId — Grade: @res.Degree</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span class="text-muted">No Results</span>
+            }
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-sm btn-warning">Edit</a>
+            <a asp-action="Delete" asp-route-id="@course.Id" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+    </tr>
+}

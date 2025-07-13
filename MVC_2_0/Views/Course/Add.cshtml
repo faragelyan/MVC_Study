@@ -1,0 +1,82 @@
+﻿@model MVC_2_0.ViewModel.CourseInstructoridsViewModel
+
+@{
+    ViewData["Title"] = "Add Course";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">➕ Add New Course</h4>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="SaveAdd" method="post">
+
+                <!-- 🔍 Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Course.Name" class="form-label"></label>
+                        <input asp-for="Course.Name" class="form-control" />
+                        <span asp-validation-for="Course.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="Course.Hours" class="form-label"></label>
+                        <input asp-for="Course.Hours" type="number" class="form-control" />
+                        <span asp-validation-for="Course.Hours" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="Course.DeptId" class="form-label">Department</label>
+                        <select asp-for="Course.DeptId" class="form-select" asp-items="@(new SelectList(Model.AllDepartments, "Id", "Name"))">
+                            <option value="">-- Select Department --</option>
+                        </select>
+                        <span asp-validation-for="Course.DeptId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Course.Degree" class="form-label"></label>
+                        <input asp-for="Course.Degree" type="number" class="form-control" />
+                        <span asp-validation-for="Course.Degree" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Course.MinDegree" class="form-label"></label>
+                        <input asp-for="Course.MinDegree" type="number" class="form-control" />
+                        <span asp-validation-for="Course.MinDegree" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Select Instructors:</label>
+                    <div class="row">
+                        @foreach (var instr in Model.AllInstructors)
+                        {
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="SelectedInstructorIds" value="@instr.Id" id="instr_@instr.Id" />
+                                    <label class="form-check-label" for="instr_@instr.Id">@instr.Name</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success">💾 Save Course</button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">↩ Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts 
+{
+    <partial name="_ValidationScriptsPartial" />
+}

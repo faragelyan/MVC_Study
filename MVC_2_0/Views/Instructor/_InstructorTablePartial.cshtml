@@ -1,0 +1,18 @@
+﻿@model List<MVC_2_0.Models.Instructor>
+
+@foreach (var inst in Model)
+{
+    <tr>
+        <td>@inst.Name</td>
+        <td>@inst.Address</td>
+        <td>@inst.Salary</td>
+        <td>@(inst.Department?.Name ?? "N/A")</td>
+        <td>@(inst.Course?.Name ?? "N/A")</td>
+        <td>
+            <img src="~/images/@inst.ImageUrl" alt="@inst.Name" class="instructor-img" />
+        </td>
+        <td>
+            <a asp-action="Details" asp-route-id="@inst.Id" class="btn btn-sm btn-primary">Details</a>
+        </td>
+    </tr>
+}

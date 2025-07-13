@@ -4,6 +4,25 @@
     ViewData["Title"] = "All Instructors";
 }
 
+@section Scripts {
+    <script>
+        // Debounced AJAX search
+        let timeout;
+        function liveSearch(input) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const searchTerm = input.value;
+
+                fetch(`/Instructor/SearchPartial?search=${encodeURIComponent(searchTerm)}`)
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById("instructorTableBody").innerHTML = html;
+                    });
+            }, 300); // 300ms delay for debounce
+        }
+    </script>
+}
+
 <style>
     tr:hover {
         background-color: #e6f2ff !important;
@@ -19,10 +38,19 @@
 
 <h2 class="mb-4">@ViewData["Title"]</h2>
 
-<a asp-controller="Instructor" asp-action="Add" class="btn btn-success mb-3">
-    + Add New Instructor
-</a>
+<!-- 🔍 Search + Add New Instructor -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex w-50">
+        <input type="text"
+               class="form-control me-2"
+               placeholder="Search by name..."
+               oninput="liveSearch(this)" />
+    </div>
 
+    <a asp-action="Add" class="btn btn-success">➕ Add New Instructor</a>
+</div>
+
+<!-- ✅ Table -->
 <table class="table table-striped table-bordered table-hover">
     <thead class="table-dark">
         <tr>
@@ -32,27 +60,10 @@
             <th>Department</th>
             <th>Course</th>
             <th>Image</th>
-            <th>Details</th>
+            <th>Actions</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var inst in Model)
-        {
-            <tr>
-                <td>@inst.Name</td>
-                <td>@inst.Address</td>
-                <td>@inst.Salary</td>
-                <td>@inst.Department?.Name</td>
-                <td>@inst.Course?.Name</td>
-                <td>
-                    <img src="~/images/@inst.ImageUrl" alt="@inst.Name" class="instructor-img" />
-                </td>
-                <td>
-                    <a asp-controller="Instructor" asp-action="Details" asp-route-id="@inst.Id" class="btn btn-primary btn-sm">
-                        Details
-                    </a>
-                </td>
-            </tr>
-        }
+    <tbody id="instructorTableBody">
+        @await Html.PartialAsync("_InstructorTablePartial", Model)
     </tbody>
 </table>
